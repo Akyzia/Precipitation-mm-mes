@@ -1,0 +1,15 @@
+var dataset = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY')
+              .filterDate('2023-10-17', '2023-11-17')
+              .select('precipitation');
+
+// Calcula a soma mensal
+var precipitationMonthly = dataset.reduce(ee.Reducer.sum());
+
+// Define a visualização para a soma mensal
+var precVis = {
+  min: 0.0,
+  max: 400,  // Você pode ajustar este valor conforme necessário
+};
+
+Map.setCenter(-41.0, 76.0, 3);
+Map.addLayer(precipitationMonthly.clip(BR), precVis, 'Precipitação Mensal (mm)');
